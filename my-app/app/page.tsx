@@ -1,7 +1,8 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Activity, Brain, AlertCircle, Droplets } from 'lucide-react';
+import { Send, Activity, Brain, AlertCircle, Droplets, X } from 'lucide-react';
 import Link from 'next/link';
+import { WelcomePopup } from '../components/WelcomePopup';
 
 
 
@@ -36,6 +37,7 @@ export default function Home() {
   const [isInitialized, setIsInitialized] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const [showWelcomePopup, setShowWelcomePopup] = useState(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -218,7 +220,7 @@ export default function Home() {
               </div>
               
               <div 
-                onClick={() => inputRef.current?.focus()}
+                onClick={() => setShowWelcomePopup(true)}
                 className="p-4 rounded-xl bg-gray-800/50 border border-gray-700 hover:border-red-500/50 
                            transition-all cursor-pointer group hover:bg-gray-800/70 w-full max-w-md"
               >
@@ -339,6 +341,15 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <WelcomePopup 
+        isOpen={showWelcomePopup}
+        onClose={() => setShowWelcomePopup(false)}
+        onQuestionClick={(question: React.SetStateAction<string>) => {
+          setInput(question);
+          handleSend();
+        }}
+      />
     </div>
   );}
   /**
